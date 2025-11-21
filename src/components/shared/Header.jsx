@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../https"; 
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../../redux/slices/userSlice";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { enqueueSnackbar } from "notistack";
 
 const Header = () => {
@@ -17,53 +17,32 @@ const Header = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const logoutMutation = useMutation({
-    mutationFn: () => logout(),
-    onSuccess: (data) => {
-      console.log("✅ Logout exitoso:", data);
-      
-      // 1. Limpiar Redux
-      dispatch(removeUser());
-      
-      // 2. Limpiar React Query cache
-      queryClient.clear();
-      
-      // 3. Limpiar localStorage
-      localStorage.clear();
-      
-      // 4. Limpiar sessionStorage
-      sessionStorage.clear();
-      
-      // 5. Mostrar mensaje
-      enqueueSnackbar("Sesión cerrada correctamente", { variant: "success" });
-      
-      // 6. Navegar a login con replace (no permite volver con back)
-      navigate("/auth", { replace: true });
-      
-      // 7. Recargar la página para limpiar cualquier estado residual
-      setTimeout(() => {
-        window.location.href = "/auth";
-      }, 100);
-    },
-    onError: (error) => {
-      console.error("❌ Error en logout:", error);
-      
-      // Incluso si hay error en el backend, limpiar todo localmente
-      dispatch(removeUser());
-      queryClient.clear();
-      localStorage.clear();
-      sessionStorage.clear();
-      
-      enqueueSnackbar("Sesión cerrada localmente", { variant: "warning" });
-      
-      // Forzar recarga
-      window.location.href = "/auth";
-    },
-  }); 
-
-  const handleLogout = () => {
+  const handleLogout = async () => {
     console.log("🔴 Iniciando logout...");
-    logoutMutation.mutate();
+    
+    try {
+      // 1. PRIMERO llamar al backend para eliminar la cookie
+      await logout();
+      console.log("✅ Cookie eliminada del servidor");
+    } catch (error) {
+      console.error("❌ Error en logout backend:", error);
+    }
+    
+    // 2. Limpiar Redux
+    dispatch(removeUser());
+    
+    // 3. Limpiar React Query cache
+    queryClient.clear();
+    
+    // 4. Limpiar localStorage y sessionStorage
+    localStorage.clear();
+    sessionStorage.clear();
+    
+    // 5. Mostrar mensaje
+    enqueueSnackbar("Sesión cerrada correctamente", { variant: "success" });
+    
+    // 6. Forzar recarga completa para eliminar cookies del navegador
+    window.location.href = "/auth";
   };
 
   return (
@@ -109,10 +88,7 @@ const Header = () => {
           </div>
           <button
             onClick={handleLogout}
-            disabled={logoutMutation.isPending}
-            className={`ml-2 hover:opacity-80 transition ${
-              logoutMutation.isPending ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-            }`}
+            className="ml-2 hover:opacity-80 transition cursor-pointer"
             title="Cerrar sesión"
           >
             <IoLogOut className="text-[#f5f5f5]" size={40} />
