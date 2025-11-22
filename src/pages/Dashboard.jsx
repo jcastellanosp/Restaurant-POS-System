@@ -23,16 +23,23 @@ const Dashboard = () => {
   };  
 
   return (
-    <div className="bg-[#1f1f1f] min-h-screen">
+    <div className="bg-gray-100 dark:bg-[#1f1f1f] min-h-screen">
       <div className="container mx-auto flex items-center justify-between py-14 px-6 md:px-4">
+        {/* Botones de Agregar */}
         <div className="flex items-center gap-3">
           {buttons.map(({ label, icon, action }) => {
             return (
               <button
                 key={action}
                 onClick={() => handleOpenModal(action)}
-                className="bg-[#1a1a1a] hover:bg-[#262626] px-8 py-3 
-              rounded-lg text-[#f5f5f5] font-semibold text-md flex items-center gap-2"
+                className="bg-white dark:bg-[#1a1a1a] 
+                  hover:bg-gray-200 dark:hover:bg-[#262626] 
+                  px-8 py-3 rounded-lg 
+                  text-gray-800 dark:text-[#f5f5f5] 
+                  font-semibold text-md 
+                  flex items-center gap-2
+                  transition-colors
+                  shadow-sm dark:shadow-none"
               >
                 {label} {icon}
               </button>
@@ -40,15 +47,21 @@ const Dashboard = () => {
           })}
         </div>
 
+        {/* Tabs de Navegación */}
         <div className="flex items-center gap-3">
           {tabs.map((tab) => {
             return (
               <button
                 key={tab}
                 className={`
-                px-8 py-3 rounded-lg text-[#f5f5f5] font-semibold text-md flex 
-                items-center gap-2 ${activeTab === tab ? "bg-[#262626]" : "bg-[#1a1a1a] hover:bg-[#262626]"
-                }`}
+                  px-8 py-3 rounded-lg 
+                  font-semibold text-md 
+                  flex items-center gap-2
+                  transition-colors
+                  ${activeTab === tab 
+                    ? "bg-gray-300 dark:bg-[#262626] text-gray-900 dark:text-[#f5f5f5] shadow-sm" 
+                    : "bg-white dark:bg-[#1a1a1a] text-gray-700 dark:text-[#f5f5f5] hover:bg-gray-200 dark:hover:bg-[#262626] shadow-sm dark:shadow-none"
+                  }`}
                 onClick={() => setActiveTab(tab)}
               >
                 {tab}
@@ -57,9 +70,12 @@ const Dashboard = () => {
           })}
         </div>
       </div>
+
+      {/* Contenido de los Tabs */}
       {activeTab === "Metricas" && <Metrics />}
       {activeTab === "Ordenes" && <RecentOrders />}
 
+      {/* Modal */}
       {isTableModalOpen && <Modal setIsTableModalOpen={setIsTableModalOpen} />}
     </div>
   );

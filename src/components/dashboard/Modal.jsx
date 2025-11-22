@@ -40,67 +40,96 @@ const Modal = ({ setIsTableModalOpen }) => {
     }
   })
 
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="bg-[#262626] p-6 rounded-lg shadow-lg w-96"
+        className="bg-white dark:bg-[#262626] p-6 rounded-lg shadow-xl w-96"
       >
         {/* Modal Header */}
-
-        <div className="flex justify-between item-center mb-4">
-          <h2 className="text-[#f5f5f5] text-xl font-semibold">Agregar Mesa</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-gray-900 dark:text-[#f5f5f5] text-xl font-semibold">
+            Agregar Mesa
+          </h2>
           <button
             onClick={handleCloseModal}
-            className="text-[#f5f5f5] hover:text-red-500"
+            className="text-gray-600 dark:text-[#f5f5f5] 
+              hover:text-red-500 dark:hover:text-red-500
+              transition-colors"
           >
             <IoMdClose size={24} />
           </button>
         </div>
 
         {/* Modal Body */}
-
         <form onSubmit={handleSubmit} className="space-y-4 mt-10">
+          {/* Número de Mesa */}
           <div>
-            <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">
-              Numero de mesa
+            <label className="block text-gray-600 dark:text-[#ababab] mb-2 mt-3 text-sm font-medium">
+              Número de mesa
             </label>
-            <div className="flex item-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
+            <div className="flex items-center rounded-lg p-5 px-4 
+              bg-gray-100 dark:bg-[#1f1f1f]
+              border border-gray-300 dark:border-transparent
+              focus-within:ring-2 focus-within:ring-yellow-400 dark:focus-within:ring-yellow-500
+              transition-all">
               <input
                 type="number"
                 name="tableNo"
                 value={tableData.tableNo}
                 onChange={handleInputChange}
-                className="bg-transparent flex-1 text-white focus:outline-none"
-                required
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">
-              Numero de sillas
-            </label>
-            <div className="flex item-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
-              <input
-                type="number"
-                name="seats"
-                value={tableData.seats}
-                onChange={handleInputChange}
-                className="bg-transparent flex-1 text-white focus:outline-none"
+                placeholder="Ej: 1"
+                className="bg-transparent flex-1 
+                  text-gray-900 dark:text-white 
+                  placeholder-gray-400 dark:placeholder-gray-500
+                  focus:outline-none"
                 required
               />
             </div>
           </div>
 
+          {/* Número de Sillas */}
+          <div>
+            <label className="block text-gray-600 dark:text-[#ababab] mb-2 mt-3 text-sm font-medium">
+              Número de sillas
+            </label>
+            <div className="flex items-center rounded-lg p-5 px-4 
+              bg-gray-100 dark:bg-[#1f1f1f]
+              border border-gray-300 dark:border-transparent
+              focus-within:ring-2 focus-within:ring-yellow-400 dark:focus-within:ring-yellow-500
+              transition-all">
+              <input
+                type="number"
+                name="seats"
+                value={tableData.seats}
+                onChange={handleInputChange}
+                placeholder="Ej: 4"
+                className="bg-transparent flex-1 
+                  text-gray-900 dark:text-white 
+                  placeholder-gray-400 dark:placeholder-gray-500
+                  focus:outline-none"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Botón Submit */}
           <button
             type="submit"
-            className="w-full rounded-lg mt-10 mb-6 py-3 text-lg bg-yellow-400 text-gray-900 font-bold"
+            disabled={tableMutation.isPending}
+            className="w-full rounded-lg mt-10 mb-6 py-3 text-lg 
+              bg-yellow-400 dark:bg-yellow-400 
+              text-gray-900 dark:text-gray-900 
+              font-bold
+              hover:bg-yellow-500 dark:hover:bg-yellow-500
+              disabled:opacity-50 disabled:cursor-not-allowed
+              transition-all
+              shadow-md"
           >
-            Agregar Mesa
+            {tableMutation.isPending ? "Agregando..." : "Agregar Mesa"}
           </button>
         </form>
       </motion.div>

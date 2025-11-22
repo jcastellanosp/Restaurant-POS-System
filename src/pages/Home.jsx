@@ -9,29 +9,42 @@ import PopularDishes from '@/components/home/PopularDishes';
 
 const Home = () => {
   return (
-    <section className="bg-[#1f1f1f] h-screen overflow-hidden flex gap-3">
+    <section className="h-screen overflow-hidden flex gap-3 
+                        bg-white dark:bg-[#1f1f1f] text-black dark:text-white">
       {/*  Div Izquierdo */}
-      <div className="flex-[3] bg-[#1a1a1a] flex flex-col h-full">
-        {/* Saludo*/}
+      <div className="flex-[3] h-full flex flex-col 
+                      bg-gray-100 dark:bg-[#1a1a1a]">
+        {/* Saludo */}
         <Greetings />
+
         <div className="flex items-center w-full gap-3 px-8 mt-8">
-          {/*MiniCard*/}
-          <MiniCard title="Ventas del día" icon={<BsCashCoin />} number={100} footerNum={1.6} />
-          <MiniCard title="En Progreso" icon={<GrInProgress />} number={16} footerNum={3.6} />
+          <MiniCard 
+            title="Ventas del día" 
+            icon={<BsCashCoin />} 
+            number={100} 
+            footerNum={1.6} 
+          />
+
+          <MiniCard 
+            title="En Progreso" 
+            icon={<GrInProgress />} 
+            number={16} 
+            footerNum={3.6} 
+          />
         </div>
-        
-        {/* Lista de Ordenes - Ocupa el espacio restante */}
+
+        {/* Lista de ordenes */}
         <div className="flex-1 overflow-hidden px-8 pb-24">
           <RecentOrders />
         </div>
       </div>
 
-      {/*  Div Derecho */}
-      <div className="flex-[2] bg-[#1a1a1a] h-full overflow-y-auto scrollbar-hide pb-24">
-        {/*Platos Populares*/}
+      {/* Div Derecho */}
+      <div className="flex-[2] h-full overflow-y-auto scrollbar-hide pb-24
+                      bg-gray-100 dark:bg-[#1a1a1a]">
         <PopularDishes />
       </div>
-      
+
       <BottomNav />
     </section>
   )

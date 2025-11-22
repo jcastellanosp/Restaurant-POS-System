@@ -77,13 +77,16 @@ const RecentOrders = () => {
 
   return (
     <>
-      <div className="container mx-auto bg-[#262626] p-4 rounded-lg">
-        <h2 className="text-[#f5f5f5] text-xl font-semibold mb-4">
-          Ordenes recientes
+      <div className="container mx-auto 
+        bg-white dark:bg-[#262626] 
+        p-4 rounded-lg 
+        shadow-md dark:shadow-sm">
+        <h2 className="text-gray-900 dark:text-[#f5f5f5] text-xl font-semibold mb-4">
+          Órdenes recientes
         </h2>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-[#f5f5f5]">
-            <thead className="bg-[#333] text-[#ababab]">
+          <table className="w-full text-left text-gray-900 dark:text-[#f5f5f5]">
+            <thead className="bg-gray-200 dark:bg-[#333] text-gray-700 dark:text-[#ababab]">
               <tr>
                 <th className="p-3">ID orden</th>
                 <th className="p-3">Cliente</th>
@@ -99,7 +102,9 @@ const RecentOrders = () => {
               {resData?.data.data.map((order, index) => (
                 <tr
                   key={index}
-                  className="border-b border-gray-600 hover:bg-[#333]"
+                  className="border-b border-gray-300 dark:border-gray-600 
+                    hover:bg-gray-100 dark:hover:bg-[#333]
+                    transition-colors"
                 >
                   <td className="p-4">
                     #{Math.floor(new Date(order.orderDate).getTime())}
@@ -107,11 +112,17 @@ const RecentOrders = () => {
                   <td className="p-4">{order.customerDetails.name}</td>
                   <td className="p-4">
                     <select
-                      className={`bg-[#1a1a1a] border border-gray-500 p-2 rounded-lg focus:outline-none ${
-                        order.orderStatus === ORDER_STATUS.READY_EN
-                          ? "text-green-500"
-                          : "text-yellow-500"
-                      }`}
+                      className={`
+                        bg-gray-100 dark:bg-[#1a1a1a] 
+                        border border-gray-300 dark:border-gray-500 
+                        p-2 rounded-lg 
+                        focus:outline-none focus:ring-2 focus:ring-yellow-400
+                        transition-all
+                        ${
+                          order.orderStatus === ORDER_STATUS.READY_EN
+                            ? "text-green-600 dark:text-green-500"
+                            : "text-yellow-600 dark:text-yellow-500"
+                        }`}
                       value={order.orderStatus}
                       onChange={(e) =>
                         handleStatusChange({
@@ -120,10 +131,10 @@ const RecentOrders = () => {
                         })
                       }
                     >
-                      <option className="text-yellow-500" value={ORDER_STATUS.IN_PROGRESS_EN}>
+                      <option className="text-yellow-600 dark:text-yellow-500" value={ORDER_STATUS.IN_PROGRESS_EN}>
                         En Progreso
                       </option>
-                      <option className="text-green-500" value={ORDER_STATUS.READY_EN}>
+                      <option className="text-green-600 dark:text-green-500" value={ORDER_STATUS.READY_EN}>
                         Listo
                       </option>
                     </select>
@@ -131,19 +142,27 @@ const RecentOrders = () => {
                   <td className="p-4">{formatDateAndTime(order.orderDate)}</td>
                   <td className="p-4">{order.items.length} Items</td>
                   <td className="p-4">Mesa {order.table?.tableNo}</td>
-                  <td className="p-4">${order.bills.totalWithTax}</td>
+                  <td className="p-4 font-semibold">${order.bills.totalWithTax}</td>
                   <td className="p-4">
                     <div className="flex items-center justify-center gap-2">
                       <button
                         onClick={() => handleViewDetails(order)}
-                        className="text-blue-400 hover:text-blue-500 transition p-2 hover:bg-blue-400/10 rounded"
+                        className="text-blue-500 dark:text-blue-400 
+                          hover:text-blue-600 dark:hover:text-blue-500 
+                          transition p-2 
+                          hover:bg-blue-100 dark:hover:bg-blue-400/10 
+                          rounded"
                         title="Ver detalles"
                       >
                         <AiOutlineEye size={20} />
                       </button>
                       <button
                         onClick={() => handleDeleteClick(order)}
-                        className="text-red-400 hover:text-red-500 transition p-2 hover:bg-red-400/10 rounded"
+                        className="text-red-500 dark:text-red-400 
+                          hover:text-red-600 dark:hover:text-red-500 
+                          transition p-2 
+                          hover:bg-red-100 dark:hover:bg-red-400/10 
+                          rounded"
                         title="Eliminar orden"
                       >
                         <AiOutlineDelete size={20} />
@@ -167,12 +186,12 @@ const RecentOrders = () => {
 
       {/* Modal de Confirmación de Eliminación */}
       {orderToDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-[#262626] rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 className="text-xl font-bold text-[#f5f5f5] mb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-[#262626] rounded-lg p-6 max-w-md w-full mx-4 shadow-xl">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-[#f5f5f5] mb-4">
               ¿Eliminar Orden?
             </h3>
-            <p className="text-gray-300 mb-6">
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
               ¿Estás seguro de que deseas eliminar la orden #
               {Math.floor(new Date(orderToDelete.orderDate).getTime())} de{" "}
               {orderToDelete.customerDetails.name}? Esta acción no se puede
@@ -181,15 +200,26 @@ const RecentOrders = () => {
             <div className="flex gap-3">
               <button
                 onClick={handleCancelDelete}
-                className="flex-1 bg-[#1a1a1a] hover:bg-[#333] text-[#f5f5f5] py-3 rounded-lg font-semibold transition"
+                className="flex-1 
+                  bg-gray-200 dark:bg-[#1a1a1a] 
+                  hover:bg-gray-300 dark:hover:bg-[#333] 
+                  text-gray-900 dark:text-[#f5f5f5] 
+                  py-3 rounded-lg font-semibold 
+                  transition-colors"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleConfirmDelete}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition"
+                disabled={deleteOrderMutation.isPending}
+                className="flex-1 
+                  bg-red-600 hover:bg-red-700 
+                  text-white 
+                  py-3 rounded-lg font-semibold 
+                  transition-colors
+                  disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Eliminar
+                {deleteOrderMutation.isPending ? "Eliminando..." : "Eliminar"}
               </button>
             </div>
           </div>

@@ -7,16 +7,18 @@ const OrderDetailsModal = ({ order, onClose }) => {
   if (!order) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-[#262626] rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-[#262626] rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-600">
-          <h2 className="text-2xl font-bold text-[#f5f5f5]">
+        <div className="flex items-center justify-between p-6 border-b border-gray-300 dark:border-gray-600">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-[#f5f5f5]">
             Detalles de la Orden
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition"
+            className="text-gray-500 dark:text-gray-400 
+              hover:text-gray-900 dark:hover:text-white 
+              transition"
           >
             <IoMdClose size={24} />
           </button>
@@ -25,38 +27,38 @@ const OrderDetailsModal = ({ order, onClose }) => {
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Order Info */}
-          <div className="bg-[#1a1a1a] p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-[#f5f5f5] mb-3">
+          <div className="bg-gray-100 dark:bg-[#1a1a1a] p-4 rounded-lg">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-[#f5f5f5] mb-3">
               Información de la Orden
             </h3>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <span className="text-gray-400">ID Orden:</span>
-                <p className="text-[#f5f5f5] font-medium">
+                <span className="text-gray-600 dark:text-gray-400">ID Orden:</span>
+                <p className="text-gray-900 dark:text-[#f5f5f5] font-medium">
                   #{Math.floor(new Date(order.orderDate).getTime())}
                 </p>
               </div>
               <div>
-                <span className="text-gray-400">Estado:</span>
+                <span className="text-gray-600 dark:text-gray-400">Estado:</span>
                 <p
                   className={`font-medium ${
                     order.orderStatus === ORDER_STATUS.READY_EN
-                      ? "text-green-500"
-                      : "text-yellow-500"
+                      ? "text-green-600 dark:text-green-500"
+                      : "text-yellow-600 dark:text-yellow-500"
                   }`}
                 >
                   {translateOrderStatus(order.orderStatus)}
                 </p>
               </div>
               <div>
-                <span className="text-gray-400">Fecha y Hora:</span>
-                <p className="text-[#f5f5f5]">
+                <span className="text-gray-600 dark:text-gray-400">Fecha y Hora:</span>
+                <p className="text-gray-900 dark:text-[#f5f5f5]">
                   {formatDateAndTime(order.orderDate)}
                 </p>
               </div>
               <div>
-                <span className="text-gray-400">Mesa:</span>
-                <p className="text-[#f5f5f5] font-medium">
+                <span className="text-gray-600 dark:text-gray-400">Mesa:</span>
+                <p className="text-gray-900 dark:text-[#f5f5f5] font-medium">
                   Mesa {order.table?.tableNo || "N/A"}
                 </p>
               </div>
@@ -64,26 +66,26 @@ const OrderDetailsModal = ({ order, onClose }) => {
           </div>
 
           {/* Customer Info */}
-          <div className="bg-[#1a1a1a] p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-[#f5f5f5] mb-3">
+          <div className="bg-gray-100 dark:bg-[#1a1a1a] p-4 rounded-lg">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-[#f5f5f5] mb-3">
               Información del Cliente
             </h3>
             <div className="space-y-2 text-sm">
               <div>
-                <span className="text-gray-400">Nombre:</span>
-                <p className="text-[#f5f5f5]">
+                <span className="text-gray-600 dark:text-gray-400">Nombre:</span>
+                <p className="text-gray-900 dark:text-[#f5f5f5]">
                   {order.customerDetails?.name || "N/A"}
                 </p>
               </div>
               <div>
-                <span className="text-gray-400">Teléfono:</span>
-                <p className="text-[#f5f5f5]">
+                <span className="text-gray-600 dark:text-gray-400">Teléfono:</span>
+                <p className="text-gray-900 dark:text-[#f5f5f5]">
                   {order.customerDetails?.phone || "N/A"}
                 </p>
               </div>
               <div>
-                <span className="text-gray-400">Email:</span>
-                <p className="text-[#f5f5f5]">
+                <span className="text-gray-600 dark:text-gray-400">Email:</span>
+                <p className="text-gray-900 dark:text-[#f5f5f5]">
                   {order.customerDetails?.email || "N/A"}
                 </p>
               </div>
@@ -91,40 +93,48 @@ const OrderDetailsModal = ({ order, onClose }) => {
           </div>
 
           {/* Items */}
-          <div className="bg-[#1a1a1a] p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-[#f5f5f5] mb-3">
+          <div className="bg-gray-100 dark:bg-[#1a1a1a] p-4 rounded-lg">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-[#f5f5f5] mb-3">
               Items de la Orden
             </h3>
             <div className="space-y-2">
-                  {order.items?.map((item, index) => {
-                    const unitPrice = item.pricePerQuantity ?? item.price ?? 0;
-                    const quantity = item.quantity ?? 1;
-                    const lineTotal = item.price ?? unitPrice * quantity;
+              {order.items?.map((item, index) => {
+                const unitPrice = item.pricePerQuantity ?? item.price ?? 0;
+                const quantity = item.quantity ?? 1;
+                const lineTotal = item.price ?? unitPrice * quantity;
 
-                    return (
-                      <div
-                        key={index}
-                        className="flex justify-between items-center py-2 border-b border-gray-700 last:border-0"
-                      >
-                        <div className="flex-1">
-                          <p className="text-[#f5f5f5] font-medium">
-                            {item.name || item.dishName}
-                          </p>
-                          <p className="text-gray-400 text-sm">Cantidad: {quantity}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-[#f5f5f5] font-medium">${lineTotal.toFixed(2)}</p>
-                          <p className="text-gray-400 text-sm">${unitPrice.toFixed(2)} c/u</p>
-                        </div>
-                      </div>
-                    );
-                  })}
+                return (
+                  <div
+                    key={index}
+                    className="flex justify-between items-center py-2 
+                      border-b border-gray-300 dark:border-gray-700 
+                      last:border-0"
+                  >
+                    <div className="flex-1">
+                      <p className="text-gray-900 dark:text-[#f5f5f5] font-medium">
+                        {item.name || item.dishName}
+                      </p>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">
+                        Cantidad: {quantity}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-gray-900 dark:text-[#f5f5f5] font-medium">
+                        ${lineTotal.toFixed(2)}
+                      </p>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">
+                        ${unitPrice.toFixed(2)} c/u
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
           {/* Billing */}
-          <div className="bg-[#1a1a1a] p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-[#f5f5f5] mb-3">
+          <div className="bg-gray-100 dark:bg-[#1a1a1a] p-4 rounded-lg">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-[#f5f5f5] mb-3">
               Resumen de Pago
             </h3>
             <div className="space-y-2 text-sm">
@@ -150,16 +160,26 @@ const OrderDetailsModal = ({ order, onClose }) => {
                 return (
                   <>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Subtotal:</span>
-                      <span className="text-[#f5f5f5]">${subtotal.toFixed(2)}</span>
+                      <span className="text-gray-600 dark:text-gray-400">Subtotal:</span>
+                      <span className="text-gray-900 dark:text-[#f5f5f5]">
+                        ${subtotal.toFixed(2)}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Impuestos ({order.bills?.taxPercent ?? 19}%):</span>
-                      <span className="text-[#f5f5f5]">${tax.toFixed(2)}</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Impuestos ({order.bills?.taxPercent ?? 19}%):
+                      </span>
+                      <span className="text-gray-900 dark:text-[#f5f5f5]">
+                        ${tax.toFixed(2)}
+                      </span>
                     </div>
-                    <div className="flex justify-between pt-2 border-t border-gray-700">
-                      <span className="text-[#f5f5f5] font-bold">Total:</span>
-                      <span className="text-[#f5f5f5] font-bold text-lg">${totalWithTax.toFixed(2)}</span>
+                    <div className="flex justify-between pt-2 border-t border-gray-300 dark:border-gray-700">
+                      <span className="text-gray-900 dark:text-[#f5f5f5] font-bold">
+                        Total:
+                      </span>
+                      <span className="text-gray-900 dark:text-[#f5f5f5] font-bold text-lg">
+                        ${totalWithTax.toFixed(2)}
+                      </span>
                     </div>
                   </>
                 );
@@ -169,10 +189,15 @@ const OrderDetailsModal = ({ order, onClose }) => {
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-gray-600">
+        <div className="p-6 border-t border-gray-300 dark:border-gray-600">
           <button
             onClick={onClose}
-            className="w-full bg-[#1a1a1a] hover:bg-[#333] text-[#f5f5f5] py-3 rounded-lg font-semibold transition"
+            className="w-full 
+              bg-gray-200 dark:bg-[#1a1a1a] 
+              hover:bg-gray-300 dark:hover:bg-[#333] 
+              text-gray-900 dark:text-[#f5f5f5] 
+              py-3 rounded-lg font-semibold 
+              transition-colors"
           >
             Cerrar
           </button>

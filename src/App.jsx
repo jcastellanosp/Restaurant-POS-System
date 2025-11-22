@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 import Auth from "./pages/Auth";
 import useLoadData from "./hooks/useLoadData";
 import FullScreenLoader from "./components/shared/FullScreenLoader";
+import More from "./pages/More";
+import { useEffect } from "react";
 
 function Layout() {
   const location = useLocation();
@@ -65,6 +67,14 @@ function Layout() {
               </ProtectedRoutes>
            }
          />
+          <Route
+            path="/more"
+            element={
+              <ProtectedRoutes>
+                <More />
+              </ProtectedRoutes>
+            }
+          />
           <Route path="*" element={<div>Not Found</div>} /> 
         </Routes>
     </>
@@ -81,11 +91,18 @@ function ProtectedRoutes({ children }) {
 }
 
 function App() {
-  return(
+  // 🎨 APLICAR TEMA AL MONTAR LA APP
+  useEffect(() => {
+    const theme = localStorage.getItem("theme") || "dark"; // Default a dark
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(theme);
+  }, []);
+
+  return (
     <Router>
       <Layout />
     </Router>
-  )
+  );
 }
 
 export default App;

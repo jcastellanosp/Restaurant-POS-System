@@ -11,13 +11,11 @@ const TableCard = ({ id, name, status, initials, seats, mode, isAdmin, onAdminCl
   const navigate = useNavigate();
 
   const handleClick = () => {
-    // Si es modo admin (editar o eliminar), ejecutar la acción de admin
     if (isAdmin && (mode === "edit" || mode === "delete")) {
       onAdminClick();
       return;
     }
 
-    // Comportamiento normal: solo permitir si está disponible
     if (status !== "Disponible") return;
 
     const table = { tableId: id, tableNo: name };
@@ -25,10 +23,8 @@ const TableCard = ({ id, name, status, initials, seats, mode, isAdmin, onAdminCl
     navigate(`/menu`);
   };
 
-  // Verificar si está disponible
   const isAvailable = status === "Disponible";
 
-  // Determinar el cursor y estilo según el modo
   const getCursorClass = () => {
     if (mode === "edit") return "cursor-pointer";
     if (mode === "delete") return isAvailable ? "cursor-pointer" : "cursor-not-allowed";
@@ -38,57 +34,70 @@ const TableCard = ({ id, name, status, initials, seats, mode, isAdmin, onAdminCl
   const getHoverClass = () => {
     if (mode === "edit") return "hover:bg-blue-900/20 hover:border-blue-500";
     if (mode === "delete" && isAvailable) return "hover:bg-red-900/20 hover:border-red-500";
-    if (mode === "normal" && isAvailable) return "hover:bg-[#2c2c2c]";
+    if (mode === "normal" && isAvailable) return "hover:bg-gray-300 dark:hover:bg-[#2c2c2c]";
     return "";
   };
 
   return (
     <div
       onClick={handleClick}
-      className={`w-full bg-[#262626] p-4 rounded-lg transition-all border-2 border-transparent ${getCursorClass()} ${getHoverClass()} ${
-        !isAvailable && mode === "normal" ? "opacity-80" : ""
-      }`}
+      className={`w-full 
+        bg-gray-200 dark:bg-[#262626] 
+        p-4 rounded-lg transition-all border-2 border-transparent
+        ${getCursorClass()} 
+        ${getHoverClass()}
+        ${!isAvailable && mode === "normal" ? "opacity-80" : ""}
+      `}
     >
       <div className="flex items-center justify-between px-1 mb-2">
-        <h1 className="text-[#f5f5f5] text-xl font-semibold">
+        <h1 className="text-gray-900 dark:text-[#f5f5f5] text-xl font-semibold">
           Mesa
-          <FaLongArrowAltRight className="text-[#ababab] ml-2 inline" /> {name}
+          <FaLongArrowAltRight className="text-gray-500 dark:text-[#ababab] ml-2 inline" /> {name}
         </h1>
+
+        {/* ESTADO */}
         <p
           className={`px-2 py-1 rounded-lg text-sm ${
             isAvailable
-              ? "bg-[#4a3d0a] text-yellow-400"
-              : "text-green-400 bg-[#1a3d2e]"
+              ? "bg-yellow-200 text-yellow-700 dark:bg-[#4a3d0a] dark:text-yellow-400"
+              : "bg-green-200 text-green-700 dark:bg-[#1a3d2e] dark:text-green-400"
           }`}
         >
           {status}
         </p>
       </div>
 
-      {/* Icono de modo activo */}
+      {/* ICONOS MODO ADMIN */}
       {isAdmin && mode !== "normal" && (
         <div className="flex justify-center mb-2">
           {mode === "edit" ? (
-            <MdEdit className="text-blue-400" size={24} />
+            <MdEdit className="text-blue-500 dark:text-blue-400" size={24} />
           ) : (
             <MdDelete
-              className={isAvailable ? "text-red-400" : "text-gray-600"}
+              className={isAvailable ? "text-red-500 dark:text-red-400" : "text-gray-500 dark:text-gray-600"}
               size={24}
             />
           )}
         </div>
       )}
 
+      {/* AVATAR */}
       <div className="flex items-center justify-center mt-5 mb-8">
         <h1
-          className="text-white rounded-full p-5 text-xl"
-          style={{ backgroundColor: initials ? getBgColor() : "#1f1f1f" }}
+          className={`text-xl rounded-full p-5 
+                      text-gray-900 dark:text-white
+                      ${initials 
+                        ? "" 
+                        : "bg-gray-300 dark:bg-[#1f1f1f]"
+                      }`}
+          style={ initials ? { backgroundColor: getBgColor() } : {} }
         >
           {getAvatarName(initials) || "N/A"}
         </h1>
       </div>
-      <p className="text-[#ababab] text-xs">
-        Sillas: <span className="text-[#f5f5f5]">{seats}</span>
+
+      <p className="text-gray-600 dark:text-[#ababab] text-xs">
+        Sillas: <span className="text-gray-900 dark:text-[#f5f5f5]">{seats}</span>
       </p>
     </div>
   );

@@ -18,10 +18,10 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <SnackbarProvider autoHideDuration={3000} >
-        <QueryClientProvider  client={queryClient}> 
-          <App />
-        </QueryClientProvider>        
+      <SnackbarProvider autoHideDuration={3000}>
+        <QueryClientProvider client={queryClient}>
+            <App />
+        </QueryClientProvider>
       </SnackbarProvider>
     </Provider>
   </StrictMode>,
